@@ -495,8 +495,18 @@ async def cb_handler(client: Client, query: CallbackQuery):
         await query.answer(url=f"https://t.me/{temp.U_NAME}?start=file_{query.message.chat.id}_{file_id}")          
                             
     elif query.data.startswith("sendfiles"):
-        clicked = query.from_user.id
-        ident, key = query.data.split("#") 
+        ident, key = query.data.split("#")
+        # 🔐 only the requester can use Send All
+        try:
+            req_user = query.message.reply_to_message.from_user.id
+        except:
+            req_user = None
+
+        if req_user and query.from_user.id != req_user:
+            return await query.answer(
+                "⚠️ ɴᴏᴛ ʏᴏᴜʀ ʀᴇǫᴜᴇsᴛ ʙᴜᴅᴅʏ.",
+                show_alert=True
+		    )
         try:
             await query.answer(url=f"https://telegram.me/{temp.U_NAME}?start=allfiles_{query.message.chat.id}_{key}")
             return
