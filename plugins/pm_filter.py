@@ -1133,9 +1133,9 @@ async def auto_filter(client, msg, spoll=False):
                 cap += f"\n\n<b>{file_num}. <a href='https://telegram.me/{temp.U_NAME}?start=file_{message.chat.id}_{file.file_id}'>{get_size(file.file_size)} | {clean_filename(file.file_name)}</a></b>"
     else:
         if settings.get('button'):
-            cap = f"<b><blockquote>Hᴇʏ,{message.from_user.mention}</blockquote>\n\n📂 Hᴇʀᴇ I Fᴏᴜɴᴅ Fᴏʀ Yᴏᴜʀ Sᴇᴀʀᴄʜ <code>{search}</code></b>\n\n"
+            cap = f"<b><blockquote>Hᴇʏ,{message.from_user.mention}</blockquote>\n\nʜᴇʀᴇ ɪ ғᴏᴜɴᴅ ғᴏʀ ʏᴏᴜʀ sᴇᴀʀᴄʜ - <code>{search}</code></b>\n\n<b><blockquote>🚧 ᴛʜɪs ᴘᴀɢᴇ ᴡɪʟʟ ʙᴇ ᴄʟᴏsᴇ ᴀғᴛᴇʀ ғᴇᴡ ᴍɪɴᴜᴛs</blockquote></b>"
         else:
-            cap = f"<b><blockquote>Hᴇʏ,{message.from_user.mention}</blockquote>\n\n📂 Hᴇʀᴇ I Fᴏᴜɴᴅ Fᴏʀ Yᴏᴜʀ Sᴇᴀʀᴄʜ <code>{search}</code></b>\n\n"            
+            cap = f"<b><blockquote>Hᴇʏ,{message.from_user.mention}</blockquote>\n\nʜᴇʀᴇ ɪ ғᴏᴜɴᴅ ғᴏʀ ʏᴏᴜʀ sᴇᴀʀᴄʜ - <code>{search}</code></b>\n\n<b><blockquote>🚧 ᴛʜɪs ᴘᴀɢᴇ ᴡɪʟʟ ʙᴇ ᴄʟᴏsᴇ ᴀғᴛᴇʀ ғᴇᴡ ᴍɪɴᴜᴛs</blockquote></b>"            
             for file_num, file in enumerate(files, start=1):
                 cap += f"<b>{file_num}. <a href='https://telegram.me/{temp.U_NAME}?start=file_{message.chat.id}_{file.file_id}'>{get_size(file.file_size)} | {clean_filename(file.file_name)}\n\n</a></b>"                  
     try:
