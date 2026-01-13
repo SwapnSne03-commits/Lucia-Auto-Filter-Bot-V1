@@ -174,6 +174,11 @@ async def generic_filter_handler(client, query, key, offset, search_query, setti
     is_select_mode = temp.SELECT_MODE.get(scoped_key, False)
     selected_files = temp.SELECTED.get(scoped_key, set())
 
+    # when clearing selection
+    if scoped_key is not None:
+        temp.SELECTED.pop(scoped_key, None)
+        temp.SELECT_MODE.pop(scoped_key, None)
+
     if settings.get('button') or is_select_mode:
         for index, file in enumerate(files):
             if is_select_mode:
