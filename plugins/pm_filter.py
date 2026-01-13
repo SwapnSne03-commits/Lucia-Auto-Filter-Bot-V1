@@ -168,7 +168,9 @@ async def generic_filter_handler(client, query, key, offset, search_query, setti
     btn = []
 
     # Check if select mode is active for this key
-    scoped_key = f"{key}_{req}"
+    scoped_key = None
+    if key is not None and req is not None:
+        scoped_key = f"{key}_{req}"
     is_select_mode = temp.SELECT_MODE.get(scoped_key, False)
     selected_files = temp.SELECTED.get(scoped_key, set())
 
