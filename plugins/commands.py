@@ -26,6 +26,19 @@ from .fsub_helper import check_force_subscription, is_req_subscribed, is_subscri
 TIMEZONE = "Asia/Kolkata"
 BATCH_FILES = {}
 
+async def bulk_auto_delete(msgs, delay, notice_msg):
+    await asyncio.sleep(delay)
+    for m in msgs:
+        try:
+            await m.delete()
+        except:
+            pass
+    try:
+        await notice_msg.edit_text(
+            "<b>ʏᴏᴜʀ ᴀʟʟ ᴠɪᴅᴇᴏꜱ/ꜰɪʟᴇꜱ ᴀʀᴇ ᴅᴇʟᴇᴛᴇᴅ ꜱᴜᴄᴄᴇꜱꜰᴜʟʟʏ !</b>"
+        )
+    except:
+        pass
 @Client.on_message(filters.command("start") & filters.incoming)
 async def start(client, message):
     bot_id = client.me.id
@@ -269,6 +282,13 @@ async def start(client, message):
         files = temp.GETALL.get(file_id)
         if not files:
             return await message.reply('<b><i>ɴᴏ ꜱᴜᴄʜ ꜰɪʟᴇ ᴇxɪꜱᴛꜱ !</b></i>')
+        scoped_key = None
+        if key is not None and req is not None:
+            scoped_key = f"{key}_{req}"
+
+        settings = await get_settings(int(grp_id))
+        DELETE_TIME = settings.get("auto_del_time", AUTO_DELETE_TIME)
+	
         filesarr = []
         for file in files:
             file_id = file.file_id
@@ -279,8 +299,8 @@ async def start(client, message):
             title = clean_filename(files1.file_name) 
             size = get_size(files1.file_size)
             f_caption = files1.caption
-            settings = await get_settings(int(grp_id))
-            DELETE_TIME = settings.get("auto_del_time", AUTO_DELETE_TIME)
+            #settings = await get_settings(int(grp_id))
+            #DELETE_TIME = settings.get("auto_del_time", AUTO_DELETE_TIME)
             SILENTX_CAPTION = settings.get('caption', CUSTOM_FILE_CAPTION)
             if SILENTX_CAPTION:
                 try:
@@ -308,11 +328,18 @@ async def start(client, message):
             )
             filesarr.append(msg)
         k = await client.send_message(chat_id=message.from_user.id, text=f"<b><u>❗️❗️❗️IMPORTANT❗️️❗️❗️</u></b>\n\nᴛʜɪꜱ ᴍᴏᴠɪᴇ ꜰɪʟᴇ/ᴠɪᴅᴇᴏ ᴡɪʟʟ ʙᴇ ᴅᴇʟᴇᴛᴇᴅ ɪɴ <b><u><code>{get_time(DELETE_TIME)}</code></u> 🫥 <i></b>(ᴅᴜᴇ ᴛᴏ ᴄᴏᴘʏʀɪɢʜᴛ ɪꜱꜱᴜᴇꜱ)</i>.\n\n<b><i>ᴘʟᴇᴀꜱᴇ ꜰᴏʀᴡᴀʀᴅ ᴛʜɪꜱ ꜰɪʟᴇ ᴛᴏ ꜱᴏᴍᴇᴡʜᴇʀᴇ ᴇʟꜱᴇ ᴀɴᴅ ꜱᴛᴀʀᴛ ᴅᴏᴡɴʟᴏᴀᴅɪɴɢ ᴛʜᴇʀᴇ</i></b>")
-        temp.SELECTED.pop(scoped_key, None)
-        await asyncio.sleep(DELETE_TIME)
-        for x in filesarr:
-            await x.delete()
-        await k.edit_text("<b>ʏᴏᴜʀ ᴀʟʟ ᴠɪᴅᴇᴏꜱ/ꜰɪʟᴇꜱ ᴀʀᴇ ᴅᴇʟᴇᴛᴇᴅ ꜱᴜᴄᴄᴇꜱꜱꜰᴜʟʟʏ !\nᴋɪɴᴅʟʏ ꜱᴇᴀʀᴄʜ ᴀɢᴀɪɴ</b>")
+        #temp.SELECTED.pop(scoped_key, None)
+        #await asyncio.sleep(DELETE_TIME)
+        #for x in filesarr:
+            #await x.delete()
+        #await k.edit_text("<b>ʏᴏᴜʀ ᴀʟʟ ᴠɪᴅᴇᴏꜱ/ꜰɪʟᴇꜱ ᴀʀᴇ ᴅᴇʟᴇᴛᴇᴅ ꜱᴜᴄᴄᴇꜱꜱꜰᴜʟʟʏ !\nᴋɪɴᴅʟʏ ꜱᴇᴀʀᴄʜ ᴀɢᴀɪɴ</b>")
+        if scoped_key is not None:
+            temp.SELECTED.pop(scoped_key, None)
+            temp.SELECT_MODE.pop(scoped_key, None)
+			
+        asyncio.create_task(
+            bulk_auto_delete(filesarr, int(DELETE_TIME), k)
+		)
         return
 
     if data.startswith("selectedfiles"):
