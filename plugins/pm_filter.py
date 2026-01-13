@@ -203,19 +203,19 @@ async def generic_filter_handler(client, query, key, offset, search_query, setti
         # Show "Send Selected" and "Done" buttons
         count = len(selected_files)
         btn.insert(1, [
-            InlineKeyboardButton(f"▫️ ꜱᴇɴᴅ▫️", callback_data=f"sendselected#{key}"),
-            InlineKeyboardButton("▫️ ᴄᴀɴᴄᴇʟ ▫️", callback_data=f"clearselect#{key}")
+            InlineKeyboardButton(f"⪻ ꜱᴇɴᴅ", callback_data=f"sendselected#{key}"),
+            InlineKeyboardButton("◇ ᴄᴀɴᴄᴇʟ ◇", callback_data=f"clearselect#{key}")
         ])
     else:
         # Show "Send All" and "Select" buttons
         if settings.get('button'):
             btn.insert(1, [
-                InlineKeyboardButton("▫️ sᴇɴᴅ ᴀʟʟ ▫️", callback_data=f"sendfiles#{key}"),
-                InlineKeyboardButton("▫️ ꜱᴇʟᴇᴄᴛ ▫️", callback_data=f"select#{key}")
+                InlineKeyboardButton("◇ sᴇɴᴅ ᴀʟʟ ◇", callback_data=f"sendfiles#{key}"),
+                InlineKeyboardButton("◇ ꜱᴇʟᴇᴄᴛ ◇", callback_data=f"select#{key}")
             ])
         else:
             btn.insert(1, [
-                InlineKeyboardButton("▫️ sᴇɴᴅ ᴀʟʟ ▫️", callback_data=f"sendfiles#{key}")
+                InlineKeyboardButton("⪻ sᴇɴᴅ ᴀʟʟ", callback_data=f"sendfiles#{key}")
             ])
 
     await build_pagination_buttons(btn, total_results, offset, n_offset, req, key, settings)
@@ -1074,18 +1074,18 @@ async def auto_filter(client, msg, spoll=False):
     if is_select_mode:
         count = len(selected_files)
         btn.insert(1, [
-            InlineKeyboardButton(f"▫️ ꜱᴇɴᴅ sᴇʟᴇᴄᴛᴇᴅ ({count}) ▫️", callback_data=f"sendselected#{key}"),
+            InlineKeyboardButton(f"◇ ꜱᴇɴᴅ sᴇʟᴇᴄᴛᴇᴅ ({count}) ◇", callback_data=f"sendselected#{key}"),
             InlineKeyboardButton("❌ ᴅᴏɴᴇ / ᴄᴀɴᴄᴇʟ", callback_data=f"clearselect#{key}")
         ])
     else:
         if settings.get('button'):
             btn.insert(1, [
-                InlineKeyboardButton("▫️ sᴇɴᴅ ᴀʟʟ ▫️", callback_data=f"sendfiles#{key}"),
-                InlineKeyboardButton("▫️ ꜱᴇʟᴇᴄᴛ ▫️", callback_data=f"select#{key}")
+                InlineKeyboardButton("⪻ sᴇɴᴅ ᴀʟʟ", callback_data=f"sendfiles#{key}"),
+                InlineKeyboardButton("⪻ ꜱᴇʟᴇᴄᴛ", callback_data=f"select#{key}")
             ])
         else:
             btn.insert(1, [
-                InlineKeyboardButton("▫️ sᴇɴᴅ ᴀʟʟ ▫️", callback_data=f"sendfiles#{key}")
+                InlineKeyboardButton("⪻ sᴇɴᴅ ᴀʟʟ", callback_data=f"sendfiles#{key}")
             ])
 
     if offset != "":
@@ -1150,9 +1150,9 @@ async def auto_filter(client, msg, spoll=False):
                 cap += f"\n\n<b>{file_num}. <a href='https://telegram.me/{temp.U_NAME}?start=file_{message.chat.id}_{file.file_id}'>{get_size(file.file_size)} | {clean_filename(file.file_name)}</a></b>"
     else:
         if settings.get('button'):
-            cap = f"<b><blockquote>Hᴇʏ,{message.from_user.mention}</blockquote>\n\nʜᴇʀᴇ ɪ ғᴏᴜɴᴅ ғᴏʀ ʏᴏᴜʀ sᴇᴀʀᴄʜ - <code>{search}</code></b>\n\n<b><blockquote>🚧 ᴛʜɪs ᴘᴀɢᴇ ᴡɪʟʟ ʙᴇ ᴄʟᴏsᴇ ᴀғᴛᴇʀ ғᴇᴡ ᴍɪɴᴜᴛs</blockquote></b>"
+            cap = f"<b><blockquote>Hᴇʏ,{message.from_user.mention}</blockquote>\n\nʜᴇʀᴇ ɪ ғᴏᴜɴᴅ ғᴏʀ ʏᴏᴜʀ sᴇᴀʀᴄʜ - <code>{search}</code></b>\n\n<b><blockquote>🚧 ᴛʜɪs ᴘᴀɢᴇ ᴡɪʟʟ ʙᴇ ᴄʟᴏsᴇ ᴀғᴛᴇʀ ғᴇᴡ ᴍɪɴᴜᴛᴇs</blockquote></b>"
         else:
-            cap = f"<b><blockquote>Hᴇʏ,{message.from_user.mention}</blockquote>\n\nʜᴇʀᴇ ɪ ғᴏᴜɴᴅ ғᴏʀ ʏᴏᴜʀ sᴇᴀʀᴄʜ - <code>{search}</code></b>\n\n<b><blockquote>🚧 ᴛʜɪs ᴘᴀɢᴇ ᴡɪʟʟ ʙᴇ ᴄʟᴏsᴇ ᴀғᴛᴇʀ ғᴇᴡ ᴍɪɴᴜᴛs</blockquote></b>"            
+            cap = f"<b><blockquote>Hᴇʏ,{message.from_user.mention}</blockquote>\n\nʜᴇʀᴇ ɪ ғᴏᴜɴᴅ ғᴏʀ ʏᴏᴜʀ sᴇᴀʀᴄʜ - <code>{search}</code></b>\n\n<b><blockquote>🚧 ᴛʜɪs ᴘᴀɢᴇ ᴡɪʟʟ ʙᴇ ᴄʟᴏsᴇ ᴀғᴛᴇʀ ғᴇᴡ ᴍɪɴᴜᴛᴇs</blockquote></b>"            
             for file_num, file in enumerate(files, start=1):
                 cap += f"<b>{file_num}. <a href='https://telegram.me/{temp.U_NAME}?start=file_{message.chat.id}_{file.file_id}'>{get_size(file.file_size)} | {clean_filename(file.file_name)}\n\n</a></b>"                  
     try:
