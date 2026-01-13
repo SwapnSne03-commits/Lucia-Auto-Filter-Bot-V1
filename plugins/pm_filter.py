@@ -210,8 +210,8 @@ async def generic_filter_handler(client, query, key, offset, search_query, setti
         # Show "Send All" and "Select" buttons
         if settings.get('button'):
             btn.insert(1, [
-                InlineKeyboardButton("◇ sᴇɴᴅ ᴀʟʟ ◇", callback_data=f"sendfiles#{key}"),
-                InlineKeyboardButton("◇ ꜱᴇʟᴇᴄᴛ ◇", callback_data=f"select#{key}")
+                InlineKeyboardButton("⪻ sᴇɴᴅ ᴀʟʟ", callback_data=f"sendfiles#{key}"),
+                InlineKeyboardButton("⪻ ꜱᴇʟᴇᴄᴛ", callback_data=f"select#{key}")
             ])
         else:
             btn.insert(1, [
@@ -263,6 +263,17 @@ async def open_category_handler(client, query, items, prefix, title_text):
 
 async def filter_selection_handler(client, query, prefix):
     _, value, key, offset = query.data.split("#")
+    # 🔐 Only requester can use navigation buttons
+    try:
+        req_user = query.message.reply_to_message.from_user.id
+    except:
+        req_user = None
+
+    if req_user and query.from_user.id != req_user:
+        return await query.answer(
+            "⚠️ ɴᴏᴛ ʏᴏᴜʀ ʀᴇǫᴜᴇsᴛ ʙᴜᴅᴅʏ.",
+            show_alert=True
+		)
     if not value:
         await query.answer()
         return
