@@ -64,13 +64,27 @@ async def is_check_admin(bot, chat_id, user_id):
     
 async def users_broadcast(user_id, message, is_pin):
     try:
-        m=await message.copy(chat_id=user_id)
+        m = await message._client.copy_message(
+    chat_id=user_id,
+    from_chat_id=message.chat.id,
+    message_id=message.id,
+    reply_markup=InlineKeyboardMarkup(
+        [
+            [
+                InlineKeyboardButton(
+                    "🔍 ᴄʟɪᴄᴋ ʜᴇʀᴇ ᴛᴏ sᴇᴀʀᴄʜ",
+                    url="https://t.me/Graduate_Request_Pro"
+                )
+            ]
+        ]
+    )
+        )
         if is_pin:
             await m.pin(both_sides=True)
         return True, "Success"
     except FloodWait as e:
         await asyncio.sleep(e.x)
-        return await users_broadcast(user_id, message)
+        return await users_broadcast(user_id, message, is_pin)
     except InputUserDeactivated:
         await db.delete_user(int(user_id))
         LOGGER.info(f"{user_id}-Removed from Database, since deleted account.")
