@@ -93,7 +93,7 @@ async def pm_text(bot, message):
         else:
             await message.reply_text(
              text=f"<b><i>ɪ ᴀᴍ ɴᴏᴛ ᴡᴏʀᴋɪɴɢ ʜᴇʀᴇ 🚫.\nᴊᴏɪɴ ᴍʏ ɢʀᴏᴜᴘ ꜰʀᴏᴍ ʙᴇʟᴏᴡ ʙᴜᴛᴛᴏɴ ᴀɴᴅ ꜱᴇᴀʀᴄʜ ᴛʜᴇʀᴇ !</i></b>",   
-             reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("📝 ꜱᴇᴀʀᴄʜ ʜᴇʀᴇ ", url=GRP_LNK)]])
+             reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("📝 Sᴇᴀʀᴄʜ Hᴇʀᴇ ", url=GRP_LNK)]])
             )
     except Exception as e:
         LOGGER.error(f"An error occurred: {str(e)}")
@@ -196,19 +196,19 @@ async def generic_filter_handler(client, query, key, offset, search_query, setti
         # Show "Send Selected" and "Done" buttons
         count = len(selected_files)
         btn.insert(1, [
-            InlineKeyboardButton(f"✅ ꜱᴇɴᴅ", callback_data=f"sendselected#{key}"),
-            InlineKeyboardButton("ᴄᴀɴᴄᴇʟ ❌", callback_data=f"clearselect#{key}")
+            InlineKeyboardButton(f"▫️ ꜱᴇɴᴅ▫️", callback_data=f"sendselected#{key}"),
+            InlineKeyboardButton("▫️ ᴄᴀɴᴄᴇʟ ▫️", callback_data=f"clearselect#{key}")
         ])
     else:
         # Show "Send All" and "Select" buttons
         if settings.get('button'):
             btn.insert(1, [
-                InlineKeyboardButton("📥 Sᴇɴᴅ Aʟʟ 📥", callback_data=f"sendfiles#{key}"),
-                InlineKeyboardButton("✅ ꜱᴇʟᴇᴄᴛ", callback_data=f"select#{key}")
+                InlineKeyboardButton("▫️ sᴇɴᴅ ᴀʟʟ ▫️", callback_data=f"sendfiles#{key}"),
+                InlineKeyboardButton("▫️ ꜱᴇʟᴇᴄᴛ ▫️", callback_data=f"select#{key}")
             ])
         else:
             btn.insert(1, [
-                InlineKeyboardButton("📥 Sᴇɴᴅ Aʟʟ 📥", callback_data=f"sendfiles#{key}")
+                InlineKeyboardButton("▫️ sᴇɴᴅ ᴀʟʟ ▫️", callback_data=f"sendfiles#{key}")
             ])
 
     await build_pagination_buttons(btn, total_results, offset, n_offset, req, key, settings)
@@ -465,7 +465,7 @@ async def advantage_spoll_choker(bot, query):
         if NO_RESULTS_MSG:
             await bot.send_message(chat_id=BIN_CHANNEL,text=script.NORSLTS.format(reqstr.id, reqstr.mention, movie))
         contact_admin_button = InlineKeyboardMarkup(
-            [[InlineKeyboardButton("🔰 Cʟɪᴄᴋ ʜᴇʀᴇ & ʀᴇǫᴜᴇsᴛ ᴛᴏ ᴀᴅᴍɪɴ🔰", url=OWNER_LNK)]])
+            [[InlineKeyboardButton("🔰 Cʟɪᴄᴋ Hᴇʀᴇ & Rᴇǫᴜᴇsᴛ Tᴏ Aᴅᴍɪɴ🔰", url=SUPPORT_GRP)]])
         k = await query.message.edit(script.MVE_NT_FND,reply_markup=contact_admin_button)
         await asyncio.sleep(10)
         await k.delete()
@@ -810,11 +810,13 @@ async def cb_handler(client: Client, query: CallbackQuery):
         buttons = [[
                     InlineKeyboardButton('➕ Aᴅᴅ Mᴇ Tᴏ Yᴏᴜʀ Gʀᴏᴜᴘ ➕', url=f'http://telegram.me/{temp.U_NAME}?startgroup=true')
                 ],[
-                    InlineKeyboardButton('🕵️‍♂️ Tᴏᴘ Sᴇᴀʀᴄʜ ', callback_data="topsearch"),
+                    InlineKeyboardButton('🎭 Mᴏᴠɪᴇ Rᴇǫᴜᴇsᴛ Gʀᴏᴜᴘ', url=GRP_LINK)
+		        ],[              
+                    InlineKeyboardButton('⚡ Dᴇsᴄʟɪᴍᴇʀ ⚡ ', callback_data="disclaimer"),
                     InlineKeyboardButton('🎋 Pʀᴇᴍɪᴜᴍ Pʟᴀɴ', callback_data="premium"),
                 ],[
-                    InlineKeyboardButton('⚡ Dᴇsᴄʟɪᴍᴇʀ ⚡', callback_data='disclaimer'),
-                    InlineKeyboardButton('✨ Aʙᴏᴜᴛ Mᴇ ✨ ', callback_data='me')
+                    InlineKeyboardButton('🕵️‍♂️ Aʙᴏᴜᴛ Mᴇ', callback_data='me'),
+                    InlineKeyboardButton('🔒 Cʟᴏsᴇ Mᴇ ', callback_data='close_data')
                 ]]
         reply_markup = InlineKeyboardMarkup(buttons)
         await client.edit_message_media(
@@ -849,12 +851,12 @@ async def cb_handler(client: Client, query: CallbackQuery):
     elif query.data == "premium":
         try:
             btn = [[
-                InlineKeyboardButton('🧧 ʙᴜʏ ᴘʀᴇᴍɪᴜᴍ 🧧', callback_data='buy'),
+                InlineKeyboardButton('Bᴜʏ Pʀᴇᴍɪᴜᴍ', callback_data='buy'),
             ],[
-                InlineKeyboardButton('👥 ʀᴇꜰᴇʀ ꜰʀɪᴇɴᴅꜱ', callback_data='reffff'),
-                InlineKeyboardButton('🈚 ꜰʀᴇᴇ ᴛʀɪᴀʟ', callback_data='give_trial')
+                InlineKeyboardButton('Rᴇꜰᴇʀ Fʀɪᴇɴᴅꜱ', callback_data='reffff'),
+                InlineKeyboardButton('Fʀᴇᴇ Tʀɪᴀʟ', callback_data='give_trial')
             ],[            
-                InlineKeyboardButton('⇋ ʙᴀᴄᴋ ᴛᴏ ʜᴏᴍᴇ ⇋', callback_data='start')
+                InlineKeyboardButton('⇋ Bᴀᴄᴋ Tᴏ Hᴏᴍᴇ ⇋', callback_data='start')
             ]]
             reply_markup = InlineKeyboardMarkup(btn)                        
             await client.edit_message_media(                
@@ -951,9 +953,9 @@ async def cb_handler(client: Client, query: CallbackQuery):
                     
     elif query.data == "me":
         buttons = [[
-            InlineKeyboardButton ('🎁 sᴏᴜʀᴄᴇ', callback_data='source'),
+            InlineKeyboardButton ('Cʜᴀɴɴᴇʟs', callback_data='source'),
         ],[
-            InlineKeyboardButton('⇋ ʙᴀᴄᴋ ᴛᴏ ʜᴏᴍᴇ ⇋', callback_data='start')
+            InlineKeyboardButton('🔹Bᴀᴄᴋ Tᴏ Hᴏᴍᴇ🔹', callback_data='start')
         ]]
         reply_markup = InlineKeyboardMarkup(buttons)
         await query.message.edit_text(
@@ -964,8 +966,8 @@ async def cb_handler(client: Client, query: CallbackQuery):
         
     elif query.data == "source":
         buttons = [[
-            InlineKeyboardButton('ꜱᴏᴜʀᴄᴇ ᴄᴏᴅᴇ 📜', url='https://t.me/Graduate_Movies'),
-            InlineKeyboardButton('⇋ ʙᴀᴄᴋ ⇋', callback_data='me')
+            InlineKeyboardButton('Uᴘᴅᴀᴛᴇ Cʜᴀɴɴʟ', url='https://t.me/Graduate_Movies'),
+            InlineKeyboardButton('Bᴀᴄᴋ', callback_data='me')
         ]]
         reply_markup = InlineKeyboardMarkup(buttons)
         await query.message.edit_text(
@@ -976,7 +978,9 @@ async def cb_handler(client: Client, query: CallbackQuery):
 
     elif query.data == "ref_point":
         await query.answer(f'You Have: {referdb.get_refer_points(query.from_user.id)} Refferal points.', show_alert=True)
-    
+
+    elif query.data == "close_data":
+        await query.message.delete()
     
     elif query.data == "disclaimer":
             btn = [[
@@ -1053,18 +1057,18 @@ async def auto_filter(client, msg, spoll=False):
     if is_select_mode:
         count = len(selected_files)
         btn.insert(1, [
-            InlineKeyboardButton(f"📥 ꜱᴇɴᴅ sᴇʟᴇᴄᴛᴇᴅ ({count}) 📥", callback_data=f"sendselected#{key}"),
+            InlineKeyboardButton(f"▫️ ꜱᴇɴᴅ sᴇʟᴇᴄᴛᴇᴅ ({count}) ▫️", callback_data=f"sendselected#{key}"),
             InlineKeyboardButton("❌ ᴅᴏɴᴇ / ᴄᴀɴᴄᴇʟ", callback_data=f"clearselect#{key}")
         ])
     else:
         if settings.get('button'):
             btn.insert(1, [
-                InlineKeyboardButton("📥 Sᴇɴᴅ Aʟʟ 📥", callback_data=f"sendfiles#{key}"),
-                InlineKeyboardButton("✅ ꜱᴇʟᴇᴄᴛ", callback_data=f"select#{key}")
+                InlineKeyboardButton("▫️ sᴇɴᴅ ᴀʟʟ ▫️", callback_data=f"sendfiles#{key}"),
+                InlineKeyboardButton("▫️ ꜱᴇʟᴇᴄᴛ ▫️", callback_data=f"select#{key}")
             ])
         else:
             btn.insert(1, [
-                InlineKeyboardButton("📥 Sᴇɴᴅ Aʟʟ 📥", callback_data=f"sendfiles#{key}")
+                InlineKeyboardButton("▫️ sᴇɴᴅ ᴀʟʟ ▫️", callback_data=f"sendfiles#{key}")
             ])
 
     if offset != "":
