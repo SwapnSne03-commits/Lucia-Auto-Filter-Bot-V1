@@ -12,9 +12,19 @@ import psutil
 import time
 from time import time
 from logging_helper import LOGGER
+from utils import temp   # 🔴 এটা অবশ্যই থাকতে হবে
 
 
 """-----------------------------------------https://t.me/SilentXBotz--------------------------------------"""
+async def delete_welcome_after(delay):
+    await asyncio.sleep(delay)
+    msg = temp.MELCOW.get("welcome")
+    if msg:
+        try:
+            await msg.delete()
+        except:
+            pass
+        temp.MELCOW.pop("welcome", None)
 
 @Client.on_message(filters.new_chat_members & filters.group)
 async def save_group(bot, message):
@@ -55,27 +65,40 @@ async def save_group(bot, message):
             LOGGER.error(f"DB error connecting group: {e}")
     else:
         settings = await get_settings(message.chat.id)
-        if settings["welcome"]:
+
+        if settings.get("welcome"):
             for u in message.new_chat_members:
-                if (temp.MELCOW).get('welcome') is not None:
+
+                # 🔹 আগের welcome থাকলে delete
+                old = temp.MELCOW.get("welcome")
+                if old:
                     try:
-                        await (temp.MELCOW['welcome']).delete()
+                        await old.delete()
                     except:
                         pass
-                temp.MELCOW['welcome'] = await message.reply_video(
-                                                 video=(MELCOW_VID),
-                                                 caption=(script.MELCOW_ENG.format(u.mention, message.chat.title)),
-                                                 reply_markup=InlineKeyboardMarkup(
-                                                                         [[
-                                                                           InlineKeyboardButton("📌 ᴄᴏɴᴛᴀᴄᴛ ꜱᴜᴘᴘᴏʀᴛ 📌", url=OWNER_LNK)
-                                                                         ]]
-                                                 ),
-                                                 parse_mode=enums.ParseMode.HTML
+                    temp.MELCOW.pop("welcome", None)
+
+                # 🔹 সবসময় নতুন welcome পাঠাও
+                temp.MELCOW["welcome"] = await message.reply_video(
+                    video=MELCOW_VID,
+                    caption=script.MELCOW_ENG.format(
+                        u.mention,
+                        message.chat.title
+                    ),
+                    reply_markup=InlineKeyboardMarkup(
+                        [[
+                            InlineKeyboardButton(
+                                "📌 ᴄᴏɴᴛᴀᴄᴛ ꜱᴜᴘᴘᴏʀᴛ 📌",
+                                url=OWNER_LNK
+                            )
+                        ]]
+                    ),
+                    parse_mode=enums.ParseMode.HTML
                 )
-                
-        if settings["auto_delete"]:
-            await asyncio.sleep(600)
-            await (temp.MELCOW['welcome']).delete()
+
+                # 🔹 auto delete (safe way)
+                if settings.get("auto_delete"):asyncio.create_task(delete_welcome_after(600))
+   
                 
 
 @Client.on_message(filters.command('leave') & filters.user(ADMINS))
